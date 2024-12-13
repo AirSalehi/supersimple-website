@@ -1,0 +1,91 @@
+﻿<krpano version="1.22" title="tour.xml - backup-2024.12.13-14.21.41">
+  <include url="skin/tour.xml - backup-2024.12.13-14.21.41" />
+
+
+    <events name="tourevents" keep="true" onxmlcomplete="setup_first_scene();" />
+
+    <action name="setup_first_scene" scope="local">
+        set(view.tx, get(image.ox));
+        set(view.ty, get(image.oy));
+        set(view.tz, get(image.oz));
+        set(events[tourevents].onxmlcomplete, null);
+    </action>
+
+    <action name="startup" autorun="onstart">
+        if(startscene === null OR !scene[get(startscene)], copy(startscene, scene[0].name); );
+        loadscene(get(startscene), null, MERGE);
+        if(startactions !== null, startactions(); );
+    </action>
+
+    <action name="tour3d_loadscene" scope="local" args="scenename">
+        loadscene(get(scenename), null, MERGE|KEEPVIEW|KEEPMOVING, BLEND(1.0));
+        if(global.customtransition !== null,
+            {
+                global.customtransition();
+                tween(view.tx, calc(image.ox), 2.0, easeinoutsine);
+                tween(view.ty, calc(image.oy), 2.0, easeinoutsine);
+                tween(view.tz, calc(image.oz), 2.0, easeinoutsine);
+            }
+        );
+        delete(global.customtransition);
+    </action>
+
+    <style name="PCAtest" keep="false" type="text"
+        css="font-size:60px;text-align:center;"
+        width="200" height="100" scale="0.17" alpha="0"
+        bgcolor="0xFFFF00" backgroundcolor="0x000000"
+        oversampling="2" mipmapping="true"
+        distorted="true" depth="0.8"
+        origin="world" rotationorder="xyz"
+        onloaded.addevent="delayedcall(1.0, tween(alpha,0.8); );"
+        onover.addevent="set(bgcolor,0xFF0099); tween(alpha,1.0);"
+        onout.addevent="set(bgcolor,0xFFFF00); tween(alpha,0.8);"
+    />
+
+    <scene name="scene_IMG_3932" title="IMG_3932" onstart="" thumburl="panos/IMG_3932.tiles/thumb.jpg">
+        <control bouncinglimits="calc:image.cube ? true : false" />
+        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <preview url="panos/IMG_3932.tiles/preview.jpg" />
+        <image style="STYLE_pano_01">
+            <cube url="panos/IMG_3932.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+            <depthmap url="panos/IMG_3932.tiles"
+              enabled="true"
+              rendermode="3dmodel"
+              background="none"
+              offset="0.0"
+              scale="100"
+              encoding="gray"
+              axis="+x+y+z"
+              cull="front"
+              center="0,0,0"
+              subdiv=""
+            />
+        </image>
+        <hotspot name="HS_01-02" style="PCAtest" tx="229.95" ty="436.81" tz="264.05" rx="-90.0" ry="0.0" rz="0.0" onclick="" />
+    </scene>
+
+    <scene name="scene_IMG_3933" title="IMG_3933" onstart="" thumburl="panos/IMG_3933.tiles/thumb.jpg">
+        <control bouncinglimits="calc:image.cube ? true : false" />
+        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <preview url="panos/IMG_3933.tiles/preview.jpg" />
+        <image style="STYLE_pano_02">
+            <cube url="panos/IMG_3933.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+            <depthmap url="panos/IMG_3933.tiles"
+              enabled="true"
+              rendermode="3dmodel"
+              background="none"
+              offset="0.0"
+              scale="100"
+              encoding="gray"
+              axis="+x+y+z"
+              cull="front"
+              center="0,0,0"
+              subdiv=""
+            />
+        </image>
+    </scene>
+
+    <style name="STYLE_pano_01" ox="0.0" oy="0.0" oz="0.0" prealign="0.0|0.0|0.0" linkedscene="scene_IMG_3932" />
+    <style name="STYLE_pano_02" ox="-21.3" oy="0.0" oz="16.92" prealign="0.0|-5.22|0.0" linkedscene="scene_IMG_3933" />
+
+</krpano>
